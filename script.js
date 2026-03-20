@@ -25,8 +25,6 @@ const screenHome = $("#screenHome");
 const screenCategory = $("#screenCategory");
 
 // Home
-const progressFill = $("#progressFill");
-const progressText = $("#progressText");
 const recentList = $("#recentList");
 const homeEmpty = $("#homeEmpty");
 const todoForm = $("#todoForm");
@@ -251,13 +249,6 @@ todoForm.addEventListener("submit", (e) => {
 });
 
 function renderHome() {
-    // Progress
-    const total = todos.length;
-    const done = todos.filter((t) => t.completed).length;
-    const pct = total === 0 ? 0 : Math.round((done / total) * 100);
-    progressFill.style.width = pct + "%";
-    progressText.textContent = pct + "%";
-
     // Stats
     const counts = { personal: 0, work: 0, shopping: 0, health: 0 };
     todos.forEach((t) => {
