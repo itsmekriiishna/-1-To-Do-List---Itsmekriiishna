@@ -184,11 +184,20 @@ themeToggle.addEventListener("change", () => {
 // ========== HOME SCREEN ==========
 
 // Radio cards
+const customCategoryInput = $("#customCategoryInput");
+
 radioCards.forEach((card) => {
     card.addEventListener("click", () => {
         radioCards.forEach((c) => c.classList.remove("selected"));
         card.classList.add("selected");
         card.querySelector("input").checked = true;
+
+        if (card.dataset.value === "custom") {
+            customCategoryInput.classList.remove("hidden");
+            customCategoryInput.focus();
+        } else {
+            customCategoryInput.classList.add("hidden");
+        }
     });
 });
 
@@ -203,7 +212,12 @@ todoForm.addEventListener("submit", (e) => {
     const text = todoInput.value.trim();
     if (!text) return;
 
-    const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+    let selectedCategory = document.querySelector('input[name="category"]:checked').value;
+    if (selectedCategory === "custom") {
+        const customVal = customCategoryInput.value.trim().toLowerCase();
+        if (!customVal) { customCategoryInput.focus(); return; }
+        selectedCategory = customVal;
+    }
 
     todos.push({
         id: Date.now(),
@@ -225,6 +239,8 @@ todoForm.addEventListener("submit", (e) => {
     radioCards.forEach((c) => c.classList.remove("selected"));
     document.querySelector('.radio-card[data-value="personal"]').classList.add("selected");
     document.querySelector('input[name="category"][value="personal"]').checked = true;
+    customCategoryInput.value = "";
+    customCategoryInput.classList.add("hidden");
 
     todoInput.focus();
     renderHome();
